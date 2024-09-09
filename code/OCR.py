@@ -4,7 +4,7 @@ import time
 import json
 
 
-class OCR():
+class OCR:
     text_result = []
     img_path_result = ""
     json_string = ""
