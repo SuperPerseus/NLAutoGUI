@@ -4,7 +4,8 @@ from get_hwnd import WindowEnumerator
 
 
 class NLP:
-    def __init__(self):
+    def __init__(self,mission):
+        self.mission=mission
         with open("H:\Project_Warehouse\API令牌.txt", 'r', encoding='utf-8') as f:
             self.api_token = f.read()
 
@@ -12,9 +13,9 @@ class NLP:
         with open(prompt_path, 'r', encoding='utf-8') as f:
             self.prompt = f.read()
 
-    def NLP_find_mission(self, mission):
+    def NLP_find_mission(self):
         client = ZhipuAI(api_key=self.api_token)
-        user_input = mission
+        user_input = self.mission
         enumerator = WindowEnumerator()
         json_data = json.dumps(enumerator.windows, ensure_ascii=False)
         print(json_data)
@@ -34,9 +35,9 @@ class NLP:
         return full_response_content
 
     def NLP_do_mission(self):
+        mission=self.mission
         client = ZhipuAI(api_key=self.api_token)
         while True:
-            user_input = "清除桌面QQ的‘缓存数据’的具体步骤。"
             response = client.chat.completions.create(
                 model="glm-4-0520",
                 messages=[
