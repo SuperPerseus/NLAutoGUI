@@ -6,7 +6,7 @@ from OCR import OCR
 
 if __name__ == '__main__':
     while True:
-        mission = str(input("\n请输入任务命令:"))
+        mission = "清理QQ缓存"#(str(input("\n请输入任务命令:")))
         nlp = NLP(mission)
         mission_hwnd = nlp.NLP_find_mission()
         if mission_hwnd == -1:
@@ -16,7 +16,7 @@ if __name__ == '__main__':
         anaIO.win_D()"""
         maximize_and_center(mission_hwnd)
         pic_file = screenshot(mission_hwnd)
-        ocr = OCR(pic_file)
-        cv = CV(pic_file, "image/template")
+        ocr = OCR(pic_file,"../image/result")
+        cv = CV(pic_file, "../image/template")
         matched_dic = cv.matched_positions
 

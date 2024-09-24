@@ -4,8 +4,12 @@ from get_hwnd import WindowEnumerator
 
 
 class NLP:
-    def __init__(self,mission):
-        self.mission=mission
+    MAX_HISTORY_LENGTH = 5
+    conversation_history = []
+
+    def __init__(self, mission):
+
+        self.mission = mission
         with open("H:\Project_Warehouse\API令牌.txt", 'r', encoding='utf-8') as f:
             self.api_token = f.read()
 
@@ -20,7 +24,7 @@ class NLP:
         json_data = json.dumps(enumerator.windows, ensure_ascii=False)
         print(json_data)
         response = client.chat.completions.create(
-            model="glm-4-0520",
+            model="glm-4-flash",
             messages=[
                 {"role": "system",
                  "content": "你需要根据传入的句柄和进程名，再结合用户自然语言中想操作的具体进程给出句柄号。"
@@ -35,17 +39,21 @@ class NLP:
         return full_response_content
 
     def NLP_do_mission(self):
-        mission=self.mission
+        mission = self.mission
+        prompt_message = self.prompt
         client = ZhipuAI(api_key=self.api_token)
+
+        init_mess = {"role": "system",
+                     "content": f"{prompt_message}"}
+        self.conversation_history.append(init_mess)
+        init_mess = {"role": "user",
+                     "content": f"当前系统为windows11，系统分辨率为2560*1440，当前需要执行的任务是{mission}"}
+        self.conversation_history.append(init_mess)
         while True:
+
             response = client.chat.completions.create(
-                model="glm-4-0520",
-                messages=[
-                    {"role": "system",
-                     "content": self.prompt},
-                    {"role": "user",
-                     "content": "当前系统为windows11，系统分辨率为2560*1440，当前需要执行的任务是‘清除桌面QQ的‘缓存数据’,请在输出第一条指令后保持阻断状态，等待OCR返回数据"},
-                ],
+                model="glm-4-flash",
+                messages=self.conversation_history,
                 stream=False,
             )
             full_response_content = response.choices[0].message.content
@@ -66,3 +74,6 @@ class NLP:
                 keep_talking = input("是否继续对话？(yes/no): ")
                 if keep_talking.lower() != 'yes':
                     break
+
+    def deHistory_message(self, ):
+        pass

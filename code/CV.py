@@ -3,6 +3,7 @@ import numpy as np
 import os
 from PIL import Image
 import json
+import time
 
 class CV:
     # 类变量，存储模板匹配到的元素的坐标
@@ -15,8 +16,8 @@ class CV:
         self.templ = None
         self.load_image()
         self.match_templates()
-        self.save_result("../image/matched_result.jpg")
-        self.save_positions_to_json("../image/matched_positions.json")
+        self.save_result("../image/result/matched_result.jpg")
+        self.save_positions_to_json("../image/result/matched_positions.json")
 
     def load_image(self):
         # 移除PNG图像中的iCCP块
@@ -81,3 +82,7 @@ class CV:
         # 将匹配到的坐标字典保存为 JSON 文件
         with open(output_path, 'w') as f:
             json.dump(CV.matched_positions, f, indent=4)
+
+if __name__ == '__main__':
+    cv = CV("H:\Project_Warehouse\\NLAutoGUI\image\screen_catch\\full-screen_1727164812.png", "../image/template")
+    print()

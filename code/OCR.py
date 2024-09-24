@@ -2,6 +2,7 @@ from paddleocr import PaddleOCR, draw_ocr
 from PIL import Image
 import time
 import json
+import os
 
 
 class OCR:
@@ -9,10 +10,11 @@ class OCR:
     img_path_result = ""
     json_string = ""
 
-    def __init__(self, img_path):
+    def __init__(self, img_path,out_path):
         self.img_path = img_path
         self.ocr()
         self.ocr_results_to_json()
+        self.save_json_string_to_file(out_path)
 
     def ocr(self):
         # Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换
@@ -29,7 +31,7 @@ class OCR:
         scores = [line[1][1] for line in result]
         im_show = draw_ocr(image, boxes, txts, scores, font_path='ttf_store/simhei.ttf')
         im_show = Image.fromarray(im_show)
-        im_show.save(f'../image/result/result{time.time()}.jpg')
+        im_show.save('../image/result/ocr_result.jpg')
 
     def ocr_results_to_json(self):
         # 初始化一个空列表，用于存储所有识别结果
@@ -53,6 +55,13 @@ class OCR:
         json_string = json.dumps(json_result, indent=2)
         self.json_string = json_string
 
+    def save_json_string_to_file(self, output_path):
+        # 将 self.json_string 保存为 JSON 文件
+        output_file_path = os.path.join(output_path, 'ocr_result.json')
+
+        # 将 self.json_string 保存为 JSON 文件
+        with open(output_file_path, 'w') as f:
+            f.write(self.json_string)
 
 if __name__ == '__main__':
     ocr = OCR("H:\Project_Warehouse\\NLAutoGUI\image\screen_catch\\full-screen_1725770084.png")
