@@ -26,7 +26,7 @@ class NLP:
         json_data = json.dumps(enumerator.windows, ensure_ascii=False)
         print(json_data)
         response = client.chat.completions.create(
-            model="glm-4-flash",
+            model="glm-4-plus",
             messages=[
                 {"role": "system",
                  "content": "你需要根据传入的句柄和进程名，再结合用户自然语言中想操作的具体进程给出句柄号。"
@@ -54,11 +54,12 @@ class NLP:
         self.conversation_history.append(init_mess)
         while True:
             response = client.chat.completions.create(
-                model="glm-4-flash",
+                model="glm-4-plus",
                 messages=self.conversation_history,
                 stream=False,
             )
             full_response_content = response.choices[0].message.content
+            self.tool.analy(full_response_content)
             print(full_response_content)
 
             # 流式传输

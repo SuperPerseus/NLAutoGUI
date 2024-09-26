@@ -1,6 +1,7 @@
 import OCR
 import CV
 import analogue_IO
+import time
 
 
 class Tool_Mediator:
@@ -21,10 +22,14 @@ class Tool_Mediator:
 
     def analy(self, order: str):
         if order == "mouse_action":
-            pass
+            time.sleep(60)
+
         elif order == "keyboard_action":
-            pass
+            time.sleep(60)
+
         elif order == "OCR_action":
-            pass
+            time.sleep(60)
+
         elif order == "CV_action":
-            pass
+            time.sleep(60)
+
