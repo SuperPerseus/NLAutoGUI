@@ -1,14 +1,16 @@
 import json
 from zhipuai import ZhipuAI
 from get_hwnd import WindowEnumerator
+import Tool_Mediator
 
 
 class NLP:
-    MAX_HISTORY_LENGTH = 5
+    MAX_HISTORY_LENGTH = 8
     conversation_history = []
+    full_response_content = ""
 
-    def __init__(self, mission):
-
+    def __init__(self, mission, tool: Tool_Mediator):
+        self.tool = tool
         self.mission = mission
         with open("H:\Project_Warehouse\API令牌.txt", 'r', encoding='utf-8') as f:
             self.api_token = f.read()
@@ -36,6 +38,7 @@ class NLP:
         )
         full_response_content = response.choices[0].message.content
         print(full_response_content)
+        self.full_response_content = full_response_content
         return full_response_content
 
     def NLP_do_mission(self):
@@ -50,7 +53,6 @@ class NLP:
                      "content": f"当前系统为windows11，系统分辨率为2560*1440，当前需要执行的任务是{mission}"}
         self.conversation_history.append(init_mess)
         while True:
-
             response = client.chat.completions.create(
                 model="glm-4-flash",
                 messages=self.conversation_history,
@@ -62,7 +64,7 @@ class NLP:
             # 流式传输
             # for chunk in response:
             #    print(chunk.choices[0].delta)
-            while True:
+            """while True:
                 # ocr_data = wait_for_ocr_data()  # 等待OCR模块返回数据的模拟函数
                 ocr_data = 123465
                 if ocr_data:
@@ -73,7 +75,7 @@ class NLP:
                 # 问用户是否继续对话
                 keep_talking = input("是否继续对话？(yes/no): ")
                 if keep_talking.lower() != 'yes':
-                    break
+                    break"""
 
     def deHistory_message(self, ):
         pass
