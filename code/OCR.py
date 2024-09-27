@@ -14,6 +14,7 @@ class OCR:
         self.img_path = img_path
         self.ocr()
         self.ocr_results_to_json()
+        self.img_ocr()
         self.save_json_string_to_file(out_path)
 
     def ocr(self):
@@ -64,5 +65,5 @@ class OCR:
             f.write(self.json_string)
 
 if __name__ == '__main__':
-    ocr = OCR("H:\Project_Warehouse\\NLAutoGUI\image\screen_catch\\full-screen_1725770084.png")
+    ocr = OCR("H:\Project_Warehouse\\NLAutoGUI\image\screen_catch\\full-screen_1727400184.png","H:\Project_Warehouse\\NLAutoGUI\image\\result")
     print(ocr.json_string)
