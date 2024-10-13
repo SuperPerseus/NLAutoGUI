@@ -43,26 +43,27 @@
           "你可以发送任意组合和数量的键盘操作指令，后续类函数可以接收一个不定长度的列表"
         ],
         "按压操作规范": {
-          "按压X键": "[press_X]",
-          "按压左shift键": "[press_LSHIFT]",
-          "按压左ctrl键的同时按压C键": "[press_LSHIFT]",
-          "按压\"任意\"键": "[press_任意]"
+          "按压X键": "[press-X]",
+          "按压左shift键": "[press-LSHIFT]",
+          "按压左ctrl键的同时按压C键": "[press-LSHIFT]",
+          "按压\"任意\"键": "[press-任意]"
         },
         "释放操作规范": {
-          "释放A键": "[release_A]",
-          "释放a键": "[release_a]",
-          "释放F1键": "[release_F1]",
-          "释放\"任意\"键": "[release_任意]"
+          "释放A键": "[release-A]",
+          "释放a键": "[release-a]",
+          "释放F1键": "[release-F1]",
+          "释放\"任意\"键": "[release-任意]"
         }
       }
     },
     "提供的输出范例": {
-      "调用CV工具并获取分析结果": "CV_action,NA,NA,NA",
-      "短点击屏幕右上角": "mouse_action,[(2560,0)],False,NA",
+      "注意，格式是要能被json.loads()存储为dict变量的": "",
+      "调用CV工具并获取分析结果": "\"action\": \"CV_action\",\n\"mouse_list\": \"NA\",\n\"mouse_slide_mode\": \"NA\",\n\"keyboard_list\": \"NA\"",
+      "短点击屏幕右上角": "{\"action\":\"mouse_action\",\n\"mouse_list\":\"[(2560, 10)]\",\n\"mouse_slide_mode\":\"False\",\n\"keyboard_list\":\"NA\"\n}",
       "鼠标从屏幕右上角滑动到左下角": "mouse_action,[(2560,0)，(0,1440)],True,NA",
       "鼠标短点击屏幕右上角后再点击左下角": "mouse_action,[(2560,0)，(0,1440)],False,NA",
-      "点击两次左shift键后点击D键": "keyboard_action,NA,NA,[press_LSHIFT,release_LSHIFT,press_LSHIFT,release_LSHIFT,press_D,release_D]",
-      "使用ctrl+a进行全选中": "keyboard_action,NA,NA,[press_CTRL,press_A,release_CTRL,release_A]"
+      "点击两次左shift键后点击D键": "keyboard_action,NA,NA,[press-LSHIFT,release-LSHIFT,press-LSHIFT,release-LSHIFT,press-D,release-D]",
+      "使用ctrl+a进行全选中": "testjson = {\"action\": \"keyboard_action\",\n\"mouse_list\": \"NA\",\n\"mouse_slide_mode\": \"NA\",\n\"keyboard_list\": \"[press-CTRL,press-A,release-CTRL,release-A]\"\n}"
     },
     "非法的输出范例": {
       "在输出参数的第四项中错误的把OCR的识别结果当成了对键盘的调用": "OCR_action,NA,NA,{\"text\": \"QQ\", \"location\": [0, 0], \"confidence\": 0.95}"

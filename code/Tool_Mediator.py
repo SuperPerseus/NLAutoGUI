@@ -1,11 +1,14 @@
+import json
+
 import OCR
 from CV import CV
 from OCR import OCR
-import analogue_IO
+from analogue_IO import Analogue_IO
 import time
 import ast
 import re
 from screenshot import *
+import json
 
 class Tool_Mediator:
     pic_file=""
@@ -20,16 +23,20 @@ class Tool_Mediator:
         self.ocr = OCR(out_path)
         self.cv = CV(template_dir)
         self.mission_hwnd = 134390#暂时的测试用进程号
+        self.io= Analogue_IO()
 
-    def analy(self, order: str):
-        split_pattern = r'[,()\s]+'
-        order = re.split(split_pattern, order)
-        action = order[0]
+    def analy(self, order:str):
+        order=json.loads(order)
+        action = order["action"]
         if action == "mouse_action":
-            print("yes")
+            str_list = order["mouse_list"].replace('(', '[').replace(')', ']')
+            str_list = json.loads(str_list)
+            self.io.mouse(str_list,bool(order["mouse_slide_mode"]))
 
         elif action == "keyboard_action":
-            time.sleep(60)
+            str_list=order["keyboard_list"][1:-1]
+            str_list = str_list.split(",")
+            self.io.keyboard(str_list)
 
         elif action == "OCR_action":
             img_path = self.screenshot_action()
@@ -51,4 +58,17 @@ if __name__ == '__main__':
     template_dir = "../image/template"
     # while True:
     tool = Tool_Mediator(out_path, template_dir)
-    tool.analy("OCR_action,NA,NA,NA")
+    """testjson={
+        "action":"mouse_action",
+        "mouse_list":"[(2560, 10)]",
+        "mouse_slide_mode":"False",
+        "keyboard_list":"NA"
+    }"""
+    testjson = {
+        "action": "keyboard_action",
+        "mouse_list": "NA",
+        "mouse_slide_mode": "NA",
+        "keyboard_list": "[press-CTRL,press-A,release-CTRL,release-A]"
+    }
+    json_string=json.dumps(testjson)
+    tool.analy(json_string)

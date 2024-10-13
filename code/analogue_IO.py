@@ -37,22 +37,59 @@ class Analogue_IO:
         'media_stop': 0xB2, 'media_play_pause': 0xB3, 'launch_mail': 0xB4,
         'launch_media_select': 0xB5, 'launch_app1': 0xB6, 'launch_app2': 0xB7
     }
+    MOUSEEVENTF_ABSOLUTE = 0x8000  # 指定鼠标的移动是绝对位置
+    MOUSEEVENTF_LEFTDOWN = 0x0002  # 鼠标左键按下
+    MOUSEEVENTF_LEFTUP = 0x0004  # 鼠标左键释放
+    MOUSEEVENTF_MIDDLEDOWN = 0x0020  # 鼠标中键按下
+    MOUSEEVENTF_MIDDLEUP = 0x0040  # 鼠标中键释放
+    MOUSEEVENTF_MOVE = 0x0001  # 鼠标移动
+    MOUSEEVENTF_RIGHTDOWN = 0x0008  # 鼠标右键按下
+    MOUSEEVENTF_RIGHTUP = 0x0010  # 鼠标右键释放
+    MOUSEEVENTF_XDOWN = 0x0080  # 鼠标X按钮按下
+    MOUSEEVENTF_XUP = 0x0100  # 鼠标X按钮释放
+    MOUSEEVENTF_WHEEL = 0x0800  # 鼠标滚轮滚动
+    MOUSEEVENTF_HWHEEL = 0x01000  # 鼠标水平滚轮滚动
 
     keybd_event = ctypes.windll.user32.keybd_event
 
     def keyboard(self, keys):
+        print(keys)
         for key in keys:
-            action, key_name = key.split('_')
+            action, key_name = key.split('-')
             vk = self.VK_CODE[key_name.lower()]
             if action == 'press':
                 self.keybd_event(vk, 0, 0, 0)
             elif action == 'release':
                 self.keybd_event(vk, 0, 2, 0)
 
+    def mouse(self, location: list, slide: bool):#现在只有左键的点击和滑动功能
+        if slide:
+            # 滑动操作
+            for i, pos in enumerate(location):
+                if i == 0:
+                    # 将鼠标直接设置到起始位置
+                    ctypes.windll.user32.SetCursorPos(pos[0], pos[1])
+                else:
+                    # 计算相对位移
+                    dx = pos[0] - location[i - 1][0]
+                    dy = pos[1] - location[i - 1][1]
+                    # 模拟鼠标移动
+                    ctypes.windll.user32.mouse_event(self.MOUSEEVENTF_MOVE, dx, dy, 0, 0)
+                # 模拟真实滑动
+                time.sleep(0.05)  # 等待50毫秒，模拟人类滑动
+        else:
+            # 点击操作
+            for pos in location:
+                # 移动鼠标到指定位置
+                ctypes.windll.user32.SetCursorPos(pos[0], pos[1])
+                # 模拟鼠标左键按下和释放
+                ctypes.windll.user32.mouse_event(self.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
+                ctypes.windll.user32.mouse_event(self.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+                # 等待一小段时间模拟真实点击
+                time.sleep(1)  # 等待100毫秒
 
-    def mouse(self,location:list):
-        pass
 
-    # 示例使用
-analogue_io = Analogue_IO()
-analogue_io.keyboard(['press_shift', 'release_shift', 'press_d', 'release_d'])
+#analogue_io = Analogue_IO()
+#analogue_io.keyboard(['press-left_win', 'press-d', 'release-left_win', 'release-d'])
+#analogue_io.mouse([(100, 100), (200, 200), (300, 300)], slide=True)
+#analogue_io.mouse([(2560, 10)], slide=False)
