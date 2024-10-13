@@ -15,9 +15,10 @@
       "你在一次http请求中只能返回一行字符串，我不希望解析request的返回值后解析出来多于一行的值",
       "你的返回值必须遵守输出格式",
       "如果有不填写的参数，则打印NA占位",
-      "如果不知道输出什么，默认输出default"
+      "如果不知道输出什么，默认输出default",
+      "注意，必须以符合字符串元组的格式打印，需要携带双引号和逗号"
     ],
-    "操作格式": "(IO动作类型, 鼠标坐标数组, 鼠标滑动模式(如果启动滑动模式，则打印True，否则默认是点击模式)，键盘操作按键)",
+    "操作格式": "IO动作类型, 鼠标坐标数组, 鼠标滑动模式(如果启动滑动模式，则打印True，否则默认是点击模式)，键盘操作按键",
     "操作格式的各限定取值": {
       "IO动作类型": [
         "mouse_action",
@@ -56,20 +57,20 @@
       }
     },
     "提供的输出范例": {
-      "调用CV工具并获取分析结果": "(CV_action,NA,NA,NA)",
-      "短点击屏幕右上角": "(mouse_action,[(2560,0)],False,NA)",
-      "鼠标从屏幕右上角滑动到左下角": "(mouse_action,[(2560,0)，(0,1440)],True,NA)",
-      "鼠标短点击屏幕右上角后再点击左下角": "(mouse_action,[(2560,0)，(0,1440)],False,NA)",
-      "点击两次左shift键后点击D键": "(keyboard_action,NA,NA,[press_LSHIFT,release_LSHIFT,press_LSHIFT,release_LSHIFT,press_D,release_D])",
-      "使用ctrl+a进行全选中": "(keyboard_action,NA,NA,[press_CTRL,press_A,release_CTRL,release_A])"
+      "调用CV工具并获取分析结果": "CV_action,NA,NA,NA",
+      "短点击屏幕右上角": "mouse_action,[(2560,0)],False,NA",
+      "鼠标从屏幕右上角滑动到左下角": "mouse_action,[(2560,0)，(0,1440)],True,NA",
+      "鼠标短点击屏幕右上角后再点击左下角": "mouse_action,[(2560,0)，(0,1440)],False,NA",
+      "点击两次左shift键后点击D键": "keyboard_action,NA,NA,[press_LSHIFT,release_LSHIFT,press_LSHIFT,release_LSHIFT,press_D,release_D]",
+      "使用ctrl+a进行全选中": "keyboard_action,NA,NA,[press_CTRL,press_A,release_CTRL,release_A]"
     },
     "非法的输出范例": {
-      "在输出参数的第四项中错误的把OCR的识别结果当成了对键盘的调用": "(OCR_action,NA,NA,{\"text\": \"QQ\", \"location\": [0, 0], \"confidence\": 0.95})"
+      "在输出参数的第四项中错误的把OCR的识别结果当成了对键盘的调用": "OCR_action,NA,NA,{\"text\": \"QQ\", \"location\": [0, 0], \"confidence\": 0.95}"
     }
   },
   "工作流程示范": {
     "清除QQ缓存": {
-      "第一步指令": "CV_action（释义，这代表着你需要获取CV类对GUI元素的定位才能执行下一步操作）",
+      "第一步指令": "CV_action,NA,NA,NA（释义，这代表着你需要获取CV类对GUI元素的定位才能执行下一步操作）",
       "第一次回传参数": [
         "CV_action:\"../image/template\\newqq_mainsetting_but.png\": [",
         "{",
@@ -92,10 +93,10 @@
         "}"
       ],
       "第二次你的思考过程": "由于CV类获取到了设置的按键(newqq_mainsetting_but.png)，所以为了实现清除QQ缓存的要求，就需要点击这里从而进入QQ主界面的设置",
-      "第二次指令": "(mouse_action,[(45,1326)],False,NA)（释义，这代表着你需要虚拟鼠标类对按钮进行点击）",
+      "第二次指令": "mouse_action,[(45,1326)],False,NA（释义，这代表着你需要虚拟鼠标类对按钮进行点击）",
       "第二次回传参数": "mouse_action:True",
       "第三次你的思考过程": "现在已经进入了QQ的设置类，需要对当前屏幕再进行一次OCR识别又或者是CV识别，寻找可能的元素",
-      "第三次指令": "(OCR_action,NA,NA,NA)",
+      "第三次指令": "OCR_action,NA,NA,NA",
       "第三次回传参数": [
         "OCR_action:",
         "{",
@@ -122,7 +123,7 @@
         "},"
       ],
       "第四次你的思考过程": "通过OCR识别已经寻找到了‘设置’的存在和位置，因此可以不用再使用CV类进行搜索了。而且需要点击一次'设置'，从而进入设置窗口",
-      "第四次指令": "(mouse_action,[(140,1245)],False,NA)（释义，点击识别到的设置存在的坐标中心，从而能点击到它）",
+      "第四次指令": "mouse_action,[(140,1245)],False,NA（释义，点击识别到的设置存在的坐标中心，从而能点击到它）",
       "第四次回传参数":"mouse_action:True"
     }
   },

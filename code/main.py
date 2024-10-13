@@ -2,7 +2,6 @@ from CV import CV
 from NLP import NLP
 from OCR import OCR
 from Tool_Mediator import Tool_Mediator
-from maxize_program_window import maximize_and_center
 from screenshot import screenshot
 
 if __name__ == '__main__':
@@ -18,10 +17,8 @@ if __name__ == '__main__':
         continue"""
     """anaIO = analogue_IO()
     anaIO.win_D()"""
-    maximize_and_center(mission_hwnd)
-    pic_file = screenshot(mission_hwnd)
-    ocr = OCR(pic_file, out_path)
-    cv = CV(pic_file, template_dir)
-    matched_dic = cv.matched_positions
+    tool.mission_hwnd=mission_hwnd
+
+    tool.pic_fil=pic_file
 
     nlp.NLP_do_mission()

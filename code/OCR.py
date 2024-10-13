@@ -9,14 +9,15 @@ class OCR:
     text_result = []
     img_path_result = ""
     json_string = ""
+    img_path=""
+    def __init__(self,out_path):
+        self.out_path=out_path
 
-    def __init__(self, img_path,out_path):
-        self.img_path = img_path
+    def do_ocr(self):
         self.ocr()
         self.ocr_results_to_json()
         self.img_ocr()
-        self.save_json_string_to_file(out_path)
-
+        self.save_json_string_to_file(self.out_path)
     def ocr(self):
         # Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换
         # 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`
