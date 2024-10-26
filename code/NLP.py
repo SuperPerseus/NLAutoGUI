@@ -173,3 +173,4 @@ if __name__ == '__main__':
 
         nlp.deHistory_message(nlp.conversation_history)
         print(time)
+        print(time)
