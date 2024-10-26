@@ -9,12 +9,14 @@ import time
 class CV:
     # 类变量，存储模板匹配到的元素的坐标
     matched_positions = {}
-    img_path = ""
+    img_path = "H:\Project_Warehouse\\NLAutoGUI\image\screen_catch\\full-screen_1729491422.png"
+    json_string=""
 
     def __init__(self, template_dir):
         self.template_dir = template_dir
         self.img = None
         self.templ = None
+        self.do_cv()
 
     def do_cv(self):
         self.load_image()
@@ -33,7 +35,7 @@ class CV:
         img = Image.open(file_path)
         img.save(file_path, icc_profile=None)
 
-    def match_templates(self, threshold=0.99):
+    def match_templates(self, threshold=0.92):
         # 遍历模板文件夹中的所有模板文件
         for template_file in os.listdir(self.template_dir):
             template_path = os.path.join(self.template_dir, template_file)
@@ -54,7 +56,6 @@ class CV:
 
             # 存储模板匹配到的元素的坐标
             CV.matched_positions[template_path] = []
-
             # 找到匹配度较高的区域
             locations = np.where(results >= threshold)
             for pt in zip(*locations[::-1]):
@@ -79,6 +80,7 @@ class CV:
 
     def save_result(self, output_path):
         cv2.imwrite(output_path, self.img)
+        self.json_string = CV.matched_positions
 
     @staticmethod
     def save_positions_to_json(output_path):
@@ -88,5 +90,4 @@ class CV:
 
 
 if __name__ == '__main__':
-    cv = CV("H:\Project_Warehouse\\NLAutoGUI\image\screen_catch\\full-screen_1727164812.png", "../image/template")
-    print()
+    cv = CV("../image/template")

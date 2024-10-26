@@ -26,27 +26,40 @@ class Tool_Mediator:
         self.io= Analogue_IO()
 
     def analy(self, order:str):
+        print(order)
         order=json.loads(order)
         action = order["action"]
         if action == "mouse_action":
-            str_list = order["mouse_list"].replace('(', '[').replace(')', ']')
+            str_list = order["mouse_list"]
             str_list = json.loads(str_list)
             self.io.mouse(str_list,bool(order["mouse_slide_mode"]))
+            return "鼠标调用结果为True"
 
         elif action == "keyboard_action":
             str_list=order["keyboard_list"][1:-1]
             str_list = str_list.split(",")
             self.io.keyboard(str_list)
+            return "键盘调用结果为True"
 
         elif action == "OCR_action":
             img_path = self.screenshot_action()
             self.ocr.img_path = img_path
             self.ocr.do_ocr()
+            if self.ocr.json_string:
+                return self.ocr.json_string
+            else:
+                return "OCR类没有识别到结果"
 
         elif action == "CV_action":
             img_path=self.screenshot_action()
             self.cv.img_path=img_path
             self.cv.do_cv()
+            if self.cv.json_string:
+                return self.cv.json_string
+            else:
+                return "CV类没有识别到结果"
+        else :
+            return "发生错误，请重新组织调用"
     def screenshot_action(self):
         maximize_and_center(self.mission_hwnd)
         pic_file = screenshot(self.mission_hwnd)
