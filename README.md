@@ -22,3 +22,6 @@ NLAutoGUI: Natural Language Powered GUI Automation
 NLAutoGUI is a cutting-edge project that leverages natural language processing (NLP), optical character recognition (OCR), and computer vision (CV) to automate graphical user interface (GUI) operations. By simply using natural language commands, users can control their computer's GUI without the need for programming or script writing. This tool aims to make complex automation accessible to all users, enhancing efficiency and simplifying human-computer interaction.
 
 
+
+微软这个更不错，实现了我的所有设想
+https://github.com/microsoft/OmniParser/tree/master
